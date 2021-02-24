@@ -5,7 +5,7 @@ from models import Jogo, Usuario
 
 
 app = Flask(__name__)
-app.secret_key = 'alura'
+app.secret_key = 'aprendendo'
 
 app.config['MYSQL_HOST'] = "localhost"
 app.config['MYSQL_USER'] = "root"
@@ -40,6 +40,7 @@ def criar():
     jogo_dao.salvar(jogo)
     return redirect(url_for('index'))
 
+
 @app.route('/atualizar', methods=['POST',])
 def atualizar():
     nome = request.form['nome']
@@ -48,6 +49,12 @@ def atualizar():
     jogo = Jogo(nome, categoria, console, id=request.form['id'])
     jogo_dao.salvar(jogo)
     return redirect(url_for('index'))
+
+@app.route('/deletar/<int:id>')
+def deletar(id):
+    jogo_dao.deletar(id)
+    flash('O jogo foi removido com sucesso.')
+    return redirect(url_for(('index')))
 
 @app.route('/editar/<int:id>')
 def editar(id):
